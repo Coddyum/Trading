@@ -17,14 +17,14 @@ import {
 
 // Valeurs pour ajuster la mise
 let currentBalance = (accountBalance.textContent = 2000);
-let limite = Number((maxAddMoney.textContent = 15000));
+let limite = (maxAddMoney.textContent = 15000);
 const less = -100;
 const more = 100;
 
-// switch investissement and add money
-const switchInvestMoney = () => {
-    investissement.classList.toggle("hidden");
+const switchAddMoney = () => {
     addMoneyWindow.classList.toggle("hidden");
+    investissement.classList.toggle("hidden");
+    closeBtn.addEventListener("click", switchAddMoney);
 };
 
 // Generate Random Number
@@ -102,6 +102,33 @@ const tradingAction = trading.forEach((item) => {
 
                 console.log(currentBalance);
             }
+        }
+    });
+});
+
+const checkUserAddMoney = () => {
+    if (
+        !(inputAddMoney.value > limite) &&
+        inputAddMoney.value >= 100 &&
+        inputAddMoney.value <= limite
+    ) {
+        if (maxAddMoney.textContent > 0) {
+            maxAddMoney.textContent -= inputAddMoney.value;
+            currentBalance =
+                Number(accountBalance.textContent) +
+                Number(inputAddMoney.value);
+            accountBalance.textContent = currentBalance;
+            return true;
+        }
+    }
+};
+
+document.querySelector(".addMoney").addEventListener("click", function () {
+    switchAddMoney();
+    addBtn.addEventListener("click", function () {
+        if (checkUserAddMoney()) {
+            switchAddMoney();
+            inputAddMoney.value = null;
         }
     });
 });
