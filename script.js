@@ -17,7 +17,8 @@ import {
 
 // Valeurs pour ajuster la mise
 let currentBalance = (accountBalance.textContent = 2000);
-let limite = (maxAddMoney.textContent = 15000);
+let limite = 15000;
+maxAddMoney.textContent = limite;
 const less = -100;
 const more = 100;
 
@@ -107,19 +108,19 @@ const tradingAction = trading.forEach((item) => {
 });
 
 const checkUserAddMoney = () => {
-    if (
-        !(inputAddMoney.value > limite) &&
-        inputAddMoney.value >= 100 &&
-        inputAddMoney.value <= limite
-    ) {
-        if (maxAddMoney.textContent > 0) {
-            maxAddMoney.textContent -= inputAddMoney.value;
-            currentBalance =
-                Number(accountBalance.textContent) +
-                Number(inputAddMoney.value);
-            accountBalance.textContent = currentBalance;
-            return true;
-        }
+    const moneyToAdd = Number(inputAddMoney.value);
+    const remainingLimit = Number(maxAddMoney.textContent);
+
+    if (moneyToAdd >= 100 && moneyToAdd <= remainingLimit) {
+        maxAddMoney.textContent = remainingLimit - moneyToAdd;
+        currentBalance = Number(accountBalance.textContent) + moneyToAdd;
+        accountBalance.textContent = currentBalance;
+        return true;
+    } else {
+        alert(
+            `Vous ne pouvez pas ajouter plus que la limite restante : ${remainingLimit}`
+        );
+        return false;
     }
 };
 
