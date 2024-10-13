@@ -3,57 +3,37 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
+        <title>Trading</title>
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <header>
-            <div class="headerdiv">
-                <h3 class="fond">
-                    Account Balance: $<span class="accountBalance">0</span>
-                </h3>
-            </div>
-            <div class="headerdiv2">
-                <button class="addMoney">Add Money</button>
-            </div>
+            <h1 class="account">
+                Account Balance: <span class="balance">0</span> $
+            </h1>
+            <button class="moneyAddBtn">Add Money</button>
         </header>
-        <hr />
-        <section class="investir">
-            <h3 class="miseInfo">
-                Votre mise est de: <span class="currentMise">0</span>
-            </h3>
-            <div class="randomUpDown">
-                <h2 class="tendance">...</h2>
-            </div>
-
-            <div class="buyingSettings">
-                <button class="less">-</button>
-                <input
-                    class="mise"
-                    type="number"
-                    placeholder="mise"
-                    minlength="3"
-                    maxlength="8"
-                    required />
-                <button class="more">+</button>
-            </div>
-            <div class="choice">
-                <button class="buyIt">Buy it</button>
-                <button class="sellIt">Sell it</button>
-            </div>
-        </section>
-        <section class="custom-section hidden">
-            <span class="close-btn">&times;</span>
-            <h1>Add Money</h1>
-            <h2>Limit: $<span class="limite">0</span></h2>
-            <input
-                type="text"
-                maxlength="5"
-                class="number-input"
-                placeholder="$100 minimum" />
-            <button class="add-btn">Add</button>
-        </section>
-
+        <main>
+            <div class="notification"></div>
+            <section class="investisment">
+                <h2>You're current bet</h2>
+                <div class="randomPctScreen">
+                    <h3>...</h3>
+                </div>
+                <div class="inputBet">
+                    <button class="less">-</button>
+                    <input
+                        type="number"
+                        maxlength="8"
+                        placeholder="min bet 100$" />
+                    <button class="more">+</button>
+                </div>
+                <div class="betOption">
+                    <button class="buy">Buy</button>
+                    <button class="sell">Sell</button>
+                </div>
+            </section>
+        </main>
         <script type="module" src="script.js"></script>
     </body>
 </html>
