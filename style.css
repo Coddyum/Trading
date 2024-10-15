@@ -17,34 +17,167 @@ header {
     justify-content: center;
     align-items: center;
     color: white;
-    padding: 10px;
+    padding: 15px;
 }
 
 .balance {
     color: rgb(246, 136, 47);
 }
 
+.accountTitle {
+    margin-top: 15px;
+}
+
 .moneyAddBtn {
     position: absolute;
     right: 0;
-    margin: 5px 30px;
+    margin-right: 30px;
+    padding: 15px 20px;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    color: black;
+    background-color: rgb(33, 189, 246);
 }
 
 main {
     display: flex;
     justify-content: center;
     align-items: center;
+    min-width: 100vw;
+    min-height: 90vh;
 }
 
+/* Notification Styles */
 .notification {
     position: absolute;
-    width: 250px;
-    height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px 50px;
     border: none;
     border-radius: 14px;
     background-color: white;
+    top: 8%;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform: translateY(-20px);
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification.hide {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.resultNotif {
+    font-size: 1.5rem;
+    color: black;
+}
+
+.notification.success {
+    background-color: rgb(33, 189, 123); /* Vert pour un gain */
+    color: white;
+}
+
+.notification.error {
+    background-color: rgb(189, 33, 33); /* Rouge pour une perte */
+    color: white;
 }
 
 .investisment {
-    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 25px;
+    color: white;
+}
+
+.randomPctScreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(44, 44, 44);
+    width: 500px;
+    height: 275px;
+    border: none;
+    border-radius: 24px;
+    font-size: 1.9rem;
+    color: white;
+}
+
+.inputBet {
+    display: flex;
+    justify-content: space-evenly;
+    min-width: 85%;
+}
+
+.less,
+.more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 15px;
+    column-gap: 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 2.4rem;
+    background-color: rgb(33, 189, 246);
+    cursor: pointer;
+}
+
+.less {
+    padding-bottom: 20px;
+}
+
+.inputMise {
+    width: 55%;
+    height: auto;
+    font-size: 1.5rem;
+    color: white;
+    background-color: black;
+    border: none;
+    border-radius: 12px;
+    padding: 0 10px;
+}
+
+.betOption {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.buy,
+.sell {
+    width: 40%;
+    height: 64px;
+    font-size: 2rem;
+    background-color: black;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    transition: ease-in-out 0.11s;
+    cursor: pointer;
+}
+
+.buy:hover {
+    background-color: green;
+}
+
+.sell:hover {
+    background-color: rgb(152, 25, 25);
+}
+
+.hidden {
+    display: none;
 }

@@ -9,20 +9,25 @@
     <body>
         <header>
             <h1 class="account">
-                Account Balance: <span class="balance">0</span> $
+                Account Balance: $<span class="balance">0</span>
             </h1>
             <button class="moneyAddBtn">Add Money</button>
         </header>
         <main>
-            <div class="notification"></div>
+            <div class="notification">
+                <h1 class="resultNotif"><span>$</span>0</h1>
+            </div>
             <section class="investisment">
-                <h2>You're current bet</h2>
+                <h2 class="accountTitle">
+                    You're current bet : $<span class="currentBet">0</span>
+                </h2>
                 <div class="randomPctScreen">
-                    <h3>...</h3>
+                    <h3 class="randomNumber">--<span>%</span></h3>
                 </div>
                 <div class="inputBet">
                     <button class="less">-</button>
                     <input
+                        class="inputMise"
                         type="number"
                         maxlength="8"
                         placeholder="min bet 100$" />
@@ -34,6 +39,17 @@
                 </div>
             </section>
         </main>
-        <script type="module" src="script.js"></script>
+        <div class="addMoneyWindow hidden">
+            <input
+                class="inputAddMoney"
+                type="number"
+                placeholder="Amount to add" />
+            <button class="addBtn">Add</button>
+            <button class="closeBtn">Close</button>
+        </div>
+
+        <div class="maxAddMoney hidden">Limite: <span>15000</span></div>
+
+        <script type="module" src="script.js" defer></script>
     </body>
 </html>

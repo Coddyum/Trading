@@ -2,17 +2,19 @@
 
 // Sélectionner les éléments
 import {
-    trading,
-    lessMore,
-    inputMise,
     accountBalance,
-    currentMise,
+    inputMiseEl,
+    tradBtnEl,
+    currentBet,
+    lessMore,
+    notificationEl,
+    resultNotifEl, // Ajout pour la notification
+    addMoneyWindow,
     investissement,
     closeBtn,
     maxAddMoney,
     inputAddMoney,
     addBtn,
-    addMoneyWindow,
 } from "./elements.js";
 
 // Valeurs pour ajuster la mise
@@ -22,84 +24,117 @@ maxAddMoney.textContent = limite;
 const less = -100;
 const more = 100;
 
+// Fonction pour afficher la notification
+const showNotification = (amount, type) => {
+    // Met à jour le texte de la notification
+    resultNotifEl.innerHTML = `<span>$</span>${amount}`;
+
+    // Applique la classe correspondante au type (succès ou erreur)
+    notificationEl.classList.remove("success", "error");
+    notificationEl.classList.add(type === "gain" ? "success" : "error");
+
+    // Affiche la notification
+    notificationEl.classList.add("show");
+
+    // Cache la notification après 3 secondes
+    setTimeout(() => {
+        notificationEl.classList.add("hide");
+    }, 3000);
+
+    // Retire la notification après l'animation
+    setTimeout(() => {
+        notificationEl.classList.remove("show", "hide");
+    }, 3000);
+};
+
 const switchAddMoney = () => {
     addMoneyWindow.classList.toggle("hidden");
     investissement.classList.toggle("hidden");
     closeBtn.addEventListener("click", switchAddMoney);
 };
 
-// Generate Random Number
+// Générer un nombre aléatoire
 const generateNumberBetween = (a, b) => {
     return Math.trunc(Math.random() * (b - a)) + a;
 };
 
-// - and + input mise option
+// - et + pour ajuster la mise
 lessMore.forEach((item) => {
     item.addEventListener("click", function () {
-        let currentMise = Number(inputMise.value) || 0;
+        let currentBetVal = Number(inputMiseEl.value) || 0;
 
         if (item.classList.contains("less")) {
-            if (currentMise + less >= 0) {
-                inputMise.value = currentMise + less;
-                inputMise.classList.remove("error-mise");
+            if (currentBetVal + less >= 0) {
+                inputMiseEl.value = currentBetVal + less;
+                inputMiseEl.classList.remove("error-mise");
             } else {
-                inputMise.value = 0;
+                inputMiseEl.value = 0;
             }
         } else if (item.classList.contains("more")) {
-            if (currentMise + more < accountBalance.textContent) {
-                inputMise.value = currentMise + more;
-                inputMise.classList.remove("error-mise");
+            if (currentBetVal + more < accountBalance.textContent) {
+                inputMiseEl.value = currentBetVal + more;
+                inputMiseEl.classList.remove("error-mise");
             } else {
-                inputMise.value = accountBalance.textContent;
+                inputMiseEl.value = accountBalance.textContent;
             }
         }
     });
 });
 
+// Vérification des informations de mise de l'utilisateur
 const checkUserMiseInfo = () => {
     if (
-        !(inputMise.value > currentBalance) &&
-        inputMise.value >= 100 &&
-        inputMise.value <= 99000000
+        !(inputMiseEl.value > currentBalance) &&
+        inputMiseEl.value >= 100 &&
+        inputMiseEl.value <= 99000000
     ) {
-        currentMise.textContent = inputMise.value;
-        currentBalance = accountBalance.textContent -= inputMise.value;
+        currentBet.textContent = inputMiseEl.value;
+        currentBalance = accountBalance.textContent -= inputMiseEl.value;
         return true;
     } else {
         alert("Votre mise n'est pas valide");
-        inputMise.classList.add("error-mise");
+        inputMiseEl.classList.add("error-mise");
         return false;
     }
 };
 
+// Calcul du résultat final de la mise
 const finalsMise = (actionType, mise, randomNumber) => {
+    let result;
     if (actionType === 0) {
-        return mise + (mise * randomNumber) / 100;
+        // Achat
+        result = mise + (mise * randomNumber) / 100;
+        showNotification(Math.abs(result - mise), "gain");
     } else if (actionType === 1) {
-        return mise - (mise * randomNumber) / 100;
+        // Vente
+        result = mise - (mise * randomNumber) / 100;
+        if (result < mise) {
+            showNotification(Math.abs(result - mise), "loss"); // Si perte
+        } else {
+            showNotification(Math.abs(result - mise), "gain"); // Si gain
+        }
     }
+    return result;
 };
 
-const tradingAction = trading.forEach((item) => {
+// Gestion de l'action de trading
+const tradingAction = tradBtnEl.forEach((item) => {
     item.addEventListener("click", function () {
         let randomNumber = generateNumberBetween(-100, 100);
-        if (
-            item.classList.contains("buyIt") ||
-            item.classList.contains("sellIt")
-        ) {
+        if (item.classList.contains("buy") || item.classList.contains("sell")) {
             if (checkUserMiseInfo()) {
-                const actionType = item.classList.contains("buyIt") ? 0 : 1;
+                const actionType = item.classList.contains("buy") ? 0 : 1;
 
-                document.querySelector(".tendance").textContent = randomNumber;
-                inputMise.value = null;
+                document.querySelector(".randomNumber").textContent =
+                    randomNumber;
+                inputMiseEl.value = null;
 
                 currentBalance += finalsMise(
                     actionType,
-                    Math.floor(Number(currentMise.textContent)),
+                    Math.floor(Number(currentBet.textContent)),
                     randomNumber
                 );
-                document.querySelector(".accountBalance").textContent =
-                    Math.floor(currentBalance);
+                accountBalance.textContent = Math.floor(currentBalance);
 
                 console.log(currentBalance);
             }
@@ -107,6 +142,7 @@ const tradingAction = trading.forEach((item) => {
     });
 });
 
+// Vérification de l'ajout d'argent
 const checkUserAddMoney = () => {
     const moneyToAdd = Number(inputAddMoney.value);
     const remainingLimit = Number(maxAddMoney.textContent);
@@ -124,7 +160,8 @@ const checkUserAddMoney = () => {
     }
 };
 
-document.querySelector(".addMoney").addEventListener("click", function () {
+// Ajout d'argent via la fenêtre
+document.querySelector(".moneyAddBtn").addEventListener("click", function () {
     switchAddMoney();
     addBtn.addEventListener("click", function () {
         if (checkUserAddMoney()) {
